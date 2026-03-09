@@ -22,7 +22,8 @@ Essa API fornece endpoints completos para operações CRUD (Create, Read, Update
 jitterbit/
 ├── src/
 │   ├── config/
-│   │   └── database.js          # Configuração do PostgreSQL
+│   │   ├── database.js          # Configuração do PostgreSQL
+│   │   └── env.js               # Configuração de ambiente
 │   ├── controllers/
 │   │   ├── authController.js    # Lógica de autenticação
 │   │   └── orderController.js   # Lógica de pedidos
@@ -35,12 +36,13 @@ jitterbit/
 │   │   ├── authRoutes.js        # Rotas de autenticação
 │   │   └── orderRoutes.js       # Rotas de pedidos
 │   ├── utils/
-│   │   └── dataTransform.js     # Transformação de dados
+│   │   ├── dataTransform.js     # Transformação de dados
+│   │   └── response.js          # Respostas padronizadas
 │   └── server.js                # Inicialização do servidor
 ├── database/
 │   ├── schema.sql               # Criação das tabelas
 │   └── seed.sql                 # Dados iniciais
-├── .env                         # Variáveis de ambiente
+├── .env                         # Variáveis de ambiente (não versionado)
 ├── .env.example                 # Exemplo de configuração
 ├── .gitignore                   # Arquivos ignorados pelo git
 ├── package.json                 # Dependências do projeto
@@ -49,7 +51,7 @@ jitterbit/
 
 ## Pré-requisitos
 
-Antes de iniciar, instale:
+Instalar antes de iniciar:
 
 - **Node.js** (versão 14 ou superior)
 - **npm** (vem com Node.js)
@@ -57,55 +59,72 @@ Antes de iniciar, instale:
 
 ## Instalação
 
-### 1. Clonar ou baixar o projeto
+### 1. Clonar o projeto
 
 ```bash
-cd /Users/patriciabyrro/Desktop/jitterbit
+git clone <repository-url>
+cd jitterbit
 ```
 
-### 2. Instalar dependências (se necessário)
+### 2. Instalar dependências
 
 ```bash
 npm install
 ```
 
-### 3. Configurar banco de dados PostgreSQL
+### 3. Configurar variáveis de ambiente
 
-#### 3.1. Criar o banco de dados
+Criar arquivo `.env` a partir do exemplo:
+
+```bash
+cp .env.example .env
+```
+
+Editar o `.env` e configurar a senha do PostgreSQL:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+DB_NAME=orders_db
+
+JWT_SECRET=chave_secreta_jwt_aqui
+JWT_EXPIRES_IN=24h
+```
+
+### 4. Configurar banco de dados PostgreSQL
+
+#### 4.1. Criar o banco de dados
 
 Abrir o terminal PostgreSQL:
 
 ```bash
+# Se possui usuário postgres:
 psql -U postgres
+
+# Ou no macOS/Linux:
+psql postgres
 ```
 
 Criar o banco de dados:
 
 ```sql
 CREATE DATABASE orders_db;
+\q
 ```
 
-#### 3.2. Executar o schema para criar as tabelas
+#### 4.2. Executar o schema para criar as tabelas
 
 ```bash
-psql -U postgres -d orders_db -f database/schema.sql
+psql -d orders_db -f database/schema.sql
 ```
 
-#### 3.3. Inserir os dados iniciais (usuário de teste)
+#### 4.3. Inserir os dados iniciais (usuário de teste)
 
 ```bash
-psql -U postgres -d orders_db -f database/seed.sql
+psql -d orders_db -f database/seed.sql
 ```
-
-### 4. Configure as variáveis de ambiente
-
-Editar o arquivo `.env` para configurar a senha do PostgreSQL:
-
-```env
-DB_PASSWORD=senha_do_postgres
-```
-
-É possível adicionar outras variáveis se necessário.
 
 ## Execução
 
@@ -303,11 +322,8 @@ Exemplo: `v10089015vdb-01` → `v10089016vdb`
 
 ## Segurança
 
-- **Senhas:** Todas as senhas são armazenadas com hash bcrypt
-
-### Token inválido ou expirado
-- Faça login novamente para obter um novo token
-- Tokens expiram em 24 horas por padrão
+- **Senhas:** Hash bcrypt com 10 rounds
+- **JWT:** Tokens com expiração configurável (padrão: 24h)
 
 ## Documentação
 
@@ -315,6 +331,4 @@ A documentação da API está disponível via Swagger em:
 
 **http://localhost:3000/api-docs**
 
-## Autor
-
-Desenvolvido por Patricia Byrro como projeto de teste para entrevista técnica.
+Utilizar o botão "Authorize" no Swagger após fazer login para testar os endpoints protegidos.
