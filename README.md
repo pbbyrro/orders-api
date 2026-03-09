@@ -6,6 +6,14 @@ API REST desenvolvida com Node.js, Express e PostgreSQL para gerenciamento de pe
 
 Essa API fornece endpoints completos para operações CRUD (Create, Read, Update, Delete) de pedidos, com autenticação básica JWT. Desenvolvida seguindo boas práticas de Node.js, com código limpo, organizado e bem documentado.
 
+## Documentação
+
+A documentação da API está disponível via Swagger em:
+
+**http://localhost:3000/api-docs**
+
+Utilizar o botão "Authorize" no Swagger após fazer login para testar os endpoints protegidos.
+
 ## Tecnologias Utilizadas
 
 - **Node.js** - JavaScript
@@ -141,12 +149,6 @@ npm start
 ```
 
 O servidor estará rodando em: `http://localhost:3000`
-
-## Documentação da API
-
-Documentação interativa Swagger em:
-
-**http://localhost:3000/api-docs**
 
 ## Autenticação
 
@@ -324,11 +326,3 @@ Exemplo: `v10089015vdb-01` → `v10089016vdb`
 
 - **Senhas:** Hash bcrypt com 10 rounds
 - **JWT:** Tokens com expiração configurável (padrão: 24h)
-
-## Documentação
-
-A documentação da API está disponível via Swagger em:
-
-**http://localhost:3000/api-docs**
-
-Utilizar o botão "Authorize" no Swagger após fazer login para testar os endpoints protegidos.
