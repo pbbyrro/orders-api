@@ -1,4 +1,4 @@
-// Transforma dados do formato de entrada para o formato do banco
+// Transforms data from input format to database format
 const transformInputToDb = (inputData) => {
   return {
     orderId: inputData.numeroPedido,
@@ -12,7 +12,7 @@ const transformInputToDb = (inputData) => {
   };
 };
 
-// Transforma dados do banco para o formato de saída
+// Transforms database data to output format
 const transformDbToOutput = (dbData) => {
   if (!dbData) return null;
 
@@ -24,17 +24,17 @@ const transformDbToOutput = (dbData) => {
   };
 };
 
-// Gera próximo ID sequencial mantendo o formato: prefixo + número + sufixo
-// Exemplo: v10089001vdb -> v10089002vdb
+// Generates next sequential ID maintaining format: prefix + number + suffix
+// Example: v10089001vdb -> v10089002vdb
 const generateNextOrderId = (lastOrderId) => {
   if (!lastOrderId) {
     return 'v10089001vdb';
   }
 
-  // Remove sufixo opcional após '-' se existir
+  // Remove optional suffix after '-' if it exists
   const baseId = lastOrderId.split('-')[0];
 
-  // Extrai partes do ID usando regex
+  // Extract ID parts using regex
   const match = baseId.match(/^([a-zA-Z]+)(\d+)([a-zA-Z]+)$/);
 
   if (!match) {
@@ -44,7 +44,7 @@ const generateNextOrderId = (lastOrderId) => {
   const [, prefix, numberStr, suffix] = match;
   const number = parseInt(numberStr, 10);
 
-  // Incrementa mantendo zeros à esquerda
+  // Increment while maintaining leading zeros
   const nextNumber = (number + 1).toString().padStart(numberStr.length, '0');
 
   return `${prefix}${nextNumber}${suffix}`;

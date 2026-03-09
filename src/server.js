@@ -74,7 +74,7 @@ app.use((req, res) => {
   });
 });
 
-// Manipulador global de erros
+// Global error handler
 app.use((err, _req, res, _next) => {
   console.error(err);
 

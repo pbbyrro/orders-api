@@ -1,10 +1,10 @@
--- Criar database (executar separadamente se necessário)
+-- Create database (run separately if needed)
 -- CREATE DATABASE orders_db;
 
--- Conectar ao database
+-- Connect to database
 -- \c orders_db;
 
--- Tabela de usuários para autenticação JWT
+-- Users table for JWT authentication
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -12,14 +12,14 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de pedidos
+-- Orders table
 CREATE TABLE IF NOT EXISTS orders (
     order_id VARCHAR(50) PRIMARY KEY,
     value DECIMAL(10, 2) NOT NULL,
     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de itens dos pedidos
+-- Order items table
 CREATE TABLE IF NOT EXISTS items (
     id SERIAL PRIMARY KEY,
     order_id VARCHAR(50) NOT NULL,
@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS items (
     FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
 );
 
--- Índices para melhor performance
+-- Indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_items_order_id ON items(order_id);
 CREATE INDEX IF NOT EXISTS idx_orders_creation_date ON orders(creation_date);

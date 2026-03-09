@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 
-// Middleware para validar token JWT nas requisições protegidas
+// Middleware to validate JWT token in protected requests
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  // Extrai token do header Authorization: Bearer <token>
+  // Extract token from Authorization header: Bearer <token>
   const token = authHeader?.split(' ')[1];
 
   if (!token) {

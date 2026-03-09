@@ -16,7 +16,7 @@ const createOrder = async (orderData) => {
   const client = await getClient();
 
   try {
-    // Inicia transação para garantir integridade dos dados
+    // Start transaction to ensure data integrity
     await client.query('BEGIN');
 
     const orderQuery = `
@@ -55,7 +55,7 @@ const createOrder = async (orderData) => {
 
     return { ...order, items };
   } catch (error) {
-    // Desfaz alterações em caso de erro
+    // Rollback changes in case of error
     await client.query('ROLLBACK');
     throw error;
   } finally {
@@ -119,7 +119,7 @@ const updateOrder = async (orderId, orderData) => {
   const client = await getClient();
 
   try {
-    // Inicia transação para atualização atômica
+    // Start transaction for update
     await client.query('BEGIN');
 
     const orderQuery = `
@@ -141,7 +141,7 @@ const updateOrder = async (orderId, orderData) => {
 
     const order = orderResult.rows[0];
 
-    // Remove itens antigos antes de inserir os novos
+    // Remove old items before inserting new ones
     await client.query('DELETE FROM items WHERE order_id = $1', [orderId]);
 
     const items = [];
@@ -167,7 +167,7 @@ const updateOrder = async (orderId, orderData) => {
 
     return { ...order, items };
   } catch (error) {
-    // Desfaz alterações em caso de erro
+    // Rollback changes in case of error
     await client.query('ROLLBACK');
     throw error;
   } finally {
